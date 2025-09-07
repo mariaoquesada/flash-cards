@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards Study System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f4f8;
+    }
+    .counters {
+      position: absolute;
+      top: 10px;
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2em;
+    }
+    .card {
+      width: 300px;
+      height: 400px;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      background: white;
+    }
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 10px;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+    button:active {
+      background-color: #3e8e41;
+    }
+    img {
+      max-width: 90%;
+      max-height: 200px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: none;
+      z-index: 1000;
+    }
+    #overlay img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+    #overlay .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2em;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="counters">
+  <div>Aprendidas: <span id="learned-count">0</span></div>
+  <div>Por Reforzar: <span id="remaining-count">0</span></div>
+</div>
+
+<input type="file" id="loadDeck" accept="application/json">
+<div class="card" id="flashcard">
+  <div class="card-inner">
+    <div class="card-front" id="card-front">Carga un deck para comenzar</div>
+    <div class="card-back" id="card-back"></div>
+  </div>
+</div>
+
+<div>
+  <button id="flipBtn">Flip</button>
+  <button id="learnedBtn">Aprendida</button>
+  <button id="reinforceBtn">Reforzar</button>
+  <button id="toggleModeBtn">Modo Aleatorio: OFF</button>
+</div>
+
+<div id="overlay">
+  <span class="close">&times;</span>
+  <img id="overlay-img" src="" alt="">
+</div>
+
+<script>
+  let deck = [];
+  let currentIndex = 0;
+  let learned = [];
+  let randomMode = false;
+
+  const loadDeckInput = document.getElementById('loadDeck');
+  const flashcard = document.getElementById('flashcard');
+  const cardFront = document.getElementById('card-front');
+  const cardBack = document.getElementById('card-back');
+  const learnedCount = document.getElementById('learned-count');
+  const remainingCount = document.getElementById('remaining-count');
+  const toggleModeBtn = document.getElementById('toggleModeBtn');
+  const overlay = document.getElementById('overlay');
+  const overlayImg = document.getElementById('overlay-img');
+
+  loadDeckInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      deck = JSON.parse(event.target.result);
+      learned = [];
+      currentIndex = 0;
+      updateCounters();
+      showCard();
+      loadDeckInput.style.display = 'none';
+    };
+    reader.readAsText(file);
+  });
+
+  document.getElementById('flipBtn').addEventListener('click', () => {
+    flashcard.classList.toggle('flipped');
+  });
+
+  document.getElementById('learnedBtn').addEventListener('click', () => {
+    if (deck.length === 0) return;
+    learned.push(deck[currentIndex]);
+    deck.splice(currentIndex, 1);
+    if (deck.length === 0) {
+      updateCounters();
+      showCard();
+      return;
+    }
+    currentIndex = randomMode ? getRandomIndex() : currentIndex % deck.length;
+    updateCounters();
+    showCard();
+  });
+
+  document.getElementById('reinforceBtn').addEventListener('click', () => {
+    if (deck.length === 0) return;
+    currentIndex = randomMode ? getRandomIndex() : (currentIndex + 1) % deck.length;
+    showCard();
+  });
+
+  toggleModeBtn.addEventListener('click', () => {
+    randomMode = !randomMode;
+    toggleModeBtn.textContent = `Modo Aleatorio: ${randomMode ? 'ON' : 'OFF'}`;
+  });
+
+  overlay.querySelector('.close').addEventListener('click', () => {
+    overlay.style.display = 'none';
+    overlayImg.src = '';
+  });
+
+  function updateCounters() {
+    learnedCount.textContent = learned.length;
+    remainingCount.textContent = deck.length;
+  }
+
+  function showCard() {
+    flashcard.classList.remove('flipped');
+    if (deck.length === 0) {
+      cardFront.textContent = '¡Todas las flashcards aprendidas!';
+      cardBack.innerHTML = '';
+      return;
+    }
+    const card = deck[currentIndex];
+    cardFront.textContent = card.question;
+    if (card.image) {
+      cardBack.innerHTML = `<div>${card.answer}</div><img src="${card.image}" alt="" onclick="showOverlay('${card.image}')">`;
+    } else {
+      cardBack.innerHTML = `<div>${card.answer}</div>`;
+    }
+  }
+
+  function getRandomIndex() {
+    return Math.floor(Math.random() * deck.length);
+  }
+
+  function showOverlay(src) {
+    overlayImg.src = src;
+    overlay.style.display = 'flex';
+  }
+</script>
+
+</body>
+</html>

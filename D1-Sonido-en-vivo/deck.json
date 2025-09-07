@@ -1,0 +1,12 @@
+[
+  {
+    "question": "¿Cómo se rutea el imput de la digital snake?",
+    "answer": "Entras a routing, Imput (snake, local) Aes A y B",
+    "image": "./D1-Sonido-en-vivo/imputs.png"
+  },
+  {
+    "question": "What is a Rack-Mounted Compute System?",
+    "answer": "Multiple servers stacked vertically in a rack, simplifying cabling, consolidating network equipment, and reducing floor space.",
+    "image": ""
+  }
+]
