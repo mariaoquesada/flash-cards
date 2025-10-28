@@ -8,7 +8,7 @@
     "question": "¿Cómo se rutea el input en local?",
     "answer": "Routing + Input + local (1-8)...",
     "image": "./D1-Sonido-en-vivo/Inputs-local.png"
-  }
+  },
   {
     "question": "¿Cómo se rutea la salida de la digital snake?",
     "answer": "Routing + Aes A + Out (1-8)...",
@@ -18,7 +18,7 @@
     "question": "¿Cómo se rutea la salida en local?",
     "answer": "Routing + XLR + Out (1-8)...",
     "image": ""
-  }
+  },
   {
     "question": "¿Cómo se enlazan salidas físicas a rutas internas digitales?",
     "answer": "Routing + Out + Analogal Output con la respectiva categoría y su Out (BUS, MAIN, etc)",
@@ -28,7 +28,7 @@
     "question": "¿Qué es el gate?",
     "answer": "Un gate reduce el ruido eliminando las señales que caen por debajo de un umbral definido para eliminar el ruido no deseado de una grabación, como el ruido ambiental o los zumbidos",
     "image": ""
-  }
+  },
   {
     "question": "¿Cuál es la ruta del Gate?",
     "answer": "En el channel strip preciona Gate",
@@ -38,7 +38,7 @@
     "question": "¿Cuál es la ruta del compresor?",
     "answer": "En el channel strip preciona Comp",
     "image": "./D1-Sonido-en-vivo/Compresor.png"
-  }
+  },
   {
     "question": "¿Cómo se asignan las entradas para los efectos o procesos paralelos como compresor, Gate, EQ, etc?",
     "answer": "Home + Config + In01,02... Depende del canal o instrumento que estés enviando.",
@@ -48,7 +48,7 @@
     "question": "¿Cuál es el flujo de ruteo para el virtual saundcheck o la grabación de protools en la consola?",
     "answer": "1. Conectar compu a onsola con un cable USB </br></br> 2. Inputs en CARD </br></br> 3. Ir a la pestaña config + setup + Card",
     "image": ""
-  }
+  },
   {
     "question": "¿Cómo se configura la pestaña CARD?",
     "answer": "Se escogen 32 canales, en automático y por USB </br></br> Para seleccionar el número de inputs y autputs seguir a pestaña 2 en la opción 32in/32out",
@@ -58,7 +58,7 @@
     "question": "¿Cuál es el flujo de ruteo para el virtual saundcheck o la grabación de protools en protools?",
     "answer": "1. Playback engine + nombre de la consola (DN32)</br></br> 2. Crear 32 outs mono en I/O </br></br> 3. Asignar out de cada canal (out1,2,3...)",
     "image": ""
-  }
+  },
   {
     "question": "¿Cómo se rutea la salida física del M/C?",
     "answer": "Routing + Out + Analogal Output con la respectiva categoría y su Out en Main M/C",
@@ -68,7 +68,7 @@
     "question": "¿Cómo se hace un envío de señal al fader M/C?",
     "answer": "1. Se activa el botón Mono Centre </br></br> 2. Se deja el fader en nominal </br></br> 3. Se suben los faders de los canales que enviarás",
     "image": "./D1-Sonido-en-vivo/M-C.png"
-  }
+  },
   {
     "question": "¿Cómo se hace un low cut o high pass?",
     "answer": "1. Se activa el botón de EQ </br></br> 2. Seleccionar Lcut y expandir",
@@ -78,15 +78,20 @@
     "question": "¿Cómo se activa el oscilador y para que sirve?",
     "answer": "Sirve para añadir ruido y así probar sonido en los monitores </br></br> Monitor + view + oscillator",
     "image": "./D1-Sonido-en-vivo/oscilador.png"
-  }
+  },
   {
     "question": "¿Cómo se configuran los envíos en pre y post fader?",
     "answer": "1. Se selecciona el mixbus </br></br> 2. Home + Config ",
     "image": "./D1-Sonido-en-vivo/Pre-fader.png"
-  }
+  },
   {
     "question": "¿Cuáles son las 2 formas de hacer envíos a los mixbus?",
     "answer": "1. Se selecciona el mixbus, se activa el botón Fader flip y se sube los faders de los instrumentos </br></br> 2. Se selecciona el instrumento que se va a enviar, se activa el botón Fader flip y se sube los faders de los mixbus a los que se desea enviar",
+    "image": ""
+  },
+  {
+    "question": "¿Cuál es el short cut para rutear los outs de canales en conjunto?",
+    "answer": "Command + alt + shift",
     "image": ""
   },
   {
